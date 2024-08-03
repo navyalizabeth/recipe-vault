@@ -3,7 +3,7 @@ import { errorHandler } from "./error.js";
 import User from "../models/user.model.js";
 
 export const verifyToken = async (req, res, next) => {
-    console.log('Cookies:', req.cookies);
+  console.log("Cookies:", req.cookies);
   let token =
     req.cookies.access_token || req.headers["authorization"]?.split(" ")[1];
 

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/user.route.js";
 import recipeRoutes from "./routes/recipe.route.js";
+import searchRoutes from "./routes/search.route.js";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -12,6 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -23,8 +25,8 @@ mongoose
   });
 
 app.use("/api/user", userRoutes);
-app.use("/api/recipe", recipeRoutes);
-
+app.use("/api/recipes", recipeRoutes);
+app.use("/api/searchrecipes", searchRoutes);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";

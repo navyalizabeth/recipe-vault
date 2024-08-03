@@ -2,10 +2,6 @@ import Recipe from "../models/recipe.model.js";
 import { errorHandler } from "../utils/error.js";
 import { validationResult } from "express-validator";
 
-export const test = (req, res) => {
-  res.json({ message: "API is working" });
-};
-
 export const createRecipe = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -29,11 +25,24 @@ export const createRecipe = async (req, res, next) => {
   }
 };
 
-export const getRecipe = async (req, res, next) => {
+export const getPublicRecipes = async (req, res, next) => {
   try {
-    const recipes = await Recipe.find({
-      $or: [{ isPrivate: false }, { user: req.user._id }],
-    }).populate("user", "name email");
+    const recipes = await Recipe.find({ isPrivate: false }).populate(
+      "user",
+      "name email"
+    );
+    res.status(200).json(recipes);
+  } catch (error) {
+    next(errorHandler(400, error.message));
+  }
+};
+
+export const getMyRecipes = async (req, res, next) => {
+  try {
+    const recipes = await Recipe.find({ user: req.user._id }).populate(
+      "user",
+      "name email"
+    );
     res.status(200).json(recipes);
   } catch (error) {
     next(errorHandler(400, error.message));
@@ -61,13 +70,34 @@ export const getOneRecipe = async (req, res, next) => {
 
 export const searchRecipe = async (req, res, next) => {
   try {
-    const { query } = req.query;
-    const recipes = await Recipe.find({
-      name: { $regex: query, $options: "i" },
-      $or: [{ isPrivate: false }, { user: req.user._id }],
-    }).populate("user", "name email");
+    console.log("Full query:", req.query);
+
+    const search = req.query.q || "";
+    console.log("Search query:", search);
+
+    if (!search || typeof search !== "string") {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid search query" });
+    }
+
+    const query = {
+      isPrivate: false,
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { ingredients: { $elemMatch: { $regex: search, $options: "i" } } },
+      ],
+    };
+
+    console.log("Executing query:", JSON.stringify(query));
+    const recipes = await Recipe.find(query).populate("user", "name email");
+
+    console.log("Query results:", recipes.length);
+
     res.status(200).json(recipes);
   } catch (error) {
-    next(errorHandler(400, error.message));
+    console.error("Search error:", error);
+    console.error("Error stack:", error.stack);
+    next(errorHandler(400, "Error searching recipes: " + error.message));
   }
 };
