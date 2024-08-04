@@ -13,7 +13,7 @@ export default function RecipeListPage() {
     const fetchRecipes = async () => {
       try {
         const { data } = await axios.get("/api/recipes");
-        setErrorMessage(null)
+        setErrorMessage(null);
         setRecipes(data);
       } catch (error) {
         setErrorMessage(error.response?.data?.message || error.message);

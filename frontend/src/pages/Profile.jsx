@@ -1,13 +1,10 @@
 import React from "react";
 import { Card, Button } from "flowbite-react";
-import { FaUser, FaUserEdit, FaEnvelope, FaCalendarDay } from "react-icons/fa";
-import { useMediaQuery } from "react-responsive";
+import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
 
 export default function Profile() {
-  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
 
@@ -33,7 +30,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6 bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col items-center p-6 mt-14 bg-gray-100 dark:bg-gray-900">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">
           User Profile

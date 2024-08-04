@@ -17,9 +17,8 @@ export default function RecipeDetail() {
         setRecipe(res.data);
       } catch (error) {
         setErrorMessage(
-          error.response?.data?.message || "Failed to fetch recipe"
+         "Recipe Not Found!"
         );
-        console.error("Failed to fetch recipe:", error);
       } finally {
         setLoading(false);
       }

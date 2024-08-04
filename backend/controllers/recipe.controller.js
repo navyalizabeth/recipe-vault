@@ -70,11 +70,7 @@ export const getOneRecipe = async (req, res, next) => {
 
 export const searchRecipe = async (req, res, next) => {
   try {
-    console.log("Full query:", req.query);
-
     const search = req.query.q || "";
-    console.log("Search query:", search);
-
     if (!search || typeof search !== "string") {
       return res
         .status(400)
@@ -89,15 +85,9 @@ export const searchRecipe = async (req, res, next) => {
       ],
     };
 
-    console.log("Executing query:", JSON.stringify(query));
     const recipes = await Recipe.find(query).populate("user", "name email");
-
-    console.log("Query results:", recipes.length);
-
     res.status(200).json(recipes);
   } catch (error) {
-    console.error("Search error:", error);
-    console.error("Error stack:", error.stack);
     next(errorHandler(400, "Error searching recipes: " + error.message));
   }
 };
