@@ -45,7 +45,9 @@ mongoose
 app.use("/api/user", userRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/searchrecipes", searchRoutes);
-
+app.get('/', (req, res) => {
+  res.send('Recipe Vault API is running');
+});
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
