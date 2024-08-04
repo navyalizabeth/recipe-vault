@@ -11,14 +11,21 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const prodOrigin = [process.env.FRONTEND_URL];
+const devOrigin = ['http://localhost:5173'];
+const allowedOrigins = process.env.NODE_ENV === 'production' ? prodOrigin : devOrigin;
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not Allowed by CORS'));
+      }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    optionsSuccessStatus: 200,
+    methods: ["GET", "POST", "PUT", "DELETE"]
   })
 );
 
