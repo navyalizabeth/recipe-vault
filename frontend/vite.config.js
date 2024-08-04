@@ -1,15 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import dotenv from 'dotenv';
 
-// https://vitejs.dev/config/
+dotenv.config();
+
+const apiUrl = process.env.VITE_API_URL;
+
 export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
-        secure: false
-      }
-    }
+        target: apiUrl,
+        secure: false,
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [react()],
-})
+});
