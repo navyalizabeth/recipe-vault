@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput, Button, Alert, Spinner } from "flowbite-react";
@@ -9,6 +10,7 @@ import {
 } from "../../redux/user/userSlice";
 
 export default function Login() {
+  const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
