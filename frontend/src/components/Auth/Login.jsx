@@ -17,7 +17,6 @@ export default function Login() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
-  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +25,7 @@ export default function Login() {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch(`/${apiUrl}/user/login`, {
+      const res = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
