@@ -23,9 +23,10 @@ export default function Login() {
     if (!formData.email || !formData.password) {
       return dispatch(signInFailure("Please fill out all fields"));
     }
+    const apiUrl = import.meta.env.VITE_API_URL;
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/user/login", {
+      const res = await fetch(`${apiUrl}/api/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
