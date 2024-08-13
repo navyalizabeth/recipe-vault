@@ -16,7 +16,7 @@ export const signup = async (req, res, next) => {
       return next(errorHandler(400, "User already exists"));
     }
 
-    const hashedPassword = bcryptjs.hashSync(password, 10);
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
@@ -49,6 +49,7 @@ export const login = async (req, res, next) => {
       .cookie("access_token", token, { httpOnly: true })
       .json(rest);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

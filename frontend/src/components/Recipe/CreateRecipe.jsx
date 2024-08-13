@@ -184,7 +184,7 @@ export default function CreateRecipe() {
             />
           </div>
 
-          <div className="flex items-center mb-4">
+          {/* <div className="flex items-center mb-4">
             <input
               type="checkbox"
               id="isPrivate"
@@ -198,7 +198,7 @@ export default function CreateRecipe() {
             >
               Make the Recipe Private
             </Label>
-          </div>
+          </div> */}
           <Button
             type="submit"
             className="w-full font-semibold rounded-lg"

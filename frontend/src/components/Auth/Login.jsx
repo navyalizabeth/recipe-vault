@@ -34,13 +34,11 @@ export default function Login() {
       });
       const data = await res.json();
       if (!res.ok) {
-        console.log(data)
         throw new Error(data.message || "Login failed");
       }
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
-      console.log(error)
       dispatch(signInFailure(error.message));
     }
   };

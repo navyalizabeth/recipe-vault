@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Dropdown, Avatar, Button } from "flowbite-react";
 import { HiMenu, HiX } from "react-icons/hi";
-import { FaUser } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { signoutSuccess } from "../redux/user/userSlice";
 import axios from "axios";
@@ -33,6 +33,7 @@ export default function NavbarComponent() {
   };
 
   const handleSearch = async (query) => {
+    console.log("Searching for:", query);
     setLoading(true);
     try {
       const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/searchrecipes/search`, {
@@ -40,6 +41,7 @@ export default function NavbarComponent() {
       });
       setSearchResults(res.data);
     } catch (error) {
+      console.error("Search error:", error);
       setSearchResults([]);
     } finally {
       setLoading(false);
@@ -63,11 +65,7 @@ export default function NavbarComponent() {
   };
 
   return (
-    <Navbar
-      fluid={true}
-      rounded={true}
-      className="bg-white shadow-md h-16 border-b-2 z-50 fixed w-full top-0 left-0"
-    >
+    <Navbar fluid={true} rounded={true} className="bg-white shadow-md h-16 border-b-2 z-50 fixed w-full top-0 left-0">
       <div className="container mx-auto flex items-center justify-between relative">
         <Link to="/" className="text-2xl font-semibold text-gray-800">
           RecipeVault
@@ -94,11 +92,7 @@ export default function NavbarComponent() {
                         className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
                         onClick={() => handleRecipeClick(recipe._id)}
                       >
-                        <img
-                          src={recipe.image}
-                          alt={recipe.name}
-                          className="w-10 h-10 object-cover rounded-md mr-2"
-                        />
+                        <img src={recipe.image} alt={recipe.name} className="w-10 h-10 object-cover rounded-md mr-2" />
                         <span>{recipe.name}</span>
                       </li>
                     ))}
@@ -112,24 +106,14 @@ export default function NavbarComponent() {
           )}
         </div>
 
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="text-gray-800 md:hidden"
-        >
+        <button onClick={() => setIsOpen(!isOpen)} className="text-gray-800 md:hidden">
           {isOpen ? <HiX size={25} /> : <HiMenu size={25} />}
         </button>
 
         {/* Sidebar for mobile view */}
-        <div
-          className={`fixed inset-0 bg-white shadow-lg transform ${
-            isOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out z-40`}
-        >
+        <div className={`fixed inset-0 bg-white shadow-lg transform ${isOpen ? "translate-x-0" : "translate-x-full"} transition-transform duration-300 ease-in-out z-40`}>
           <div className="flex flex-col w-full md:w-auto">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-gray-800 p-4 text-2xl self-end"
-            >
+            <button onClick={() => setIsOpen(false)} className="text-gray-800 p-4 text-2xl self-end">
               <HiX />
             </button>
             <ul className="flex flex-col p-4 space-y-2">
@@ -141,49 +125,29 @@ export default function NavbarComponent() {
                 </li>
               )}
               <li>
-                <Link
-                  to="/"
-                  className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-                  onClick={() => setIsOpen(false)}
-                >
+                <Link to="/" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md" onClick={() => setIsOpen(false)}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/about"
-                  className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-                  onClick={() => setIsOpen(false)}
-                >
+                <Link to="/about" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md" onClick={() => setIsOpen(false)}>
                   About
                 </Link>
               </li>
               {currentUser && (
                 <>
                   <li>
-                    <Link
-                      to="/create-recipe"
-                      className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-                      onClick={() => setIsOpen(false)}
-                    >
+                    <Link to="/create-recipe" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md" onClick={() => setIsOpen(false)}>
                       Add a New Recipe
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      to="/recipes"
-                      className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-                      onClick={() => setIsOpen(false)}
-                    >
+                  {/* <li>
+                    <Link to="/recipes" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md" onClick={() => setIsOpen(false)}>
                       My Recipes
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
-                    <Link
-                      to="/profile"
-                      className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-                      onClick={() => setIsOpen(false)}
-                    >
+                    <Link to="/profile" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md" onClick={() => setIsOpen(false)}>
                       Profile
                     </Link>
                   </li>
@@ -218,37 +182,21 @@ export default function NavbarComponent() {
 
         {/* Desktop view */}
         <div className="hidden md:flex md:items-center md:space-x-6">
-          <Link
-            to="/"
-            className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-          >
+          <Link to="/" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md">
             Home
           </Link>
-          <Link
-            to="/about"
-            className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-          >
+          <Link to="/about" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md">
             About
           </Link>
           {currentUser && (
             <>
-              <Link
-                to="/create-recipe"
-                className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-              >
+              <Link to="/create-recipe" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md">
                 Add a New Recipe
               </Link>
-              <Link
-                to="/recipes"
-                className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md"
-              >
+              {/* <Link to="/recipes" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md">
                 My Recipes
-              </Link>
-              <Dropdown
-                arrowIcon={false}
-                inline
-                label={<FaUser className="w-full h-full" />}
-              >
+              </Link> */}
+              <Dropdown arrowIcon={false} inline label={<FaUser className="w-full h-full" />}>
                 <Dropdown.Header>
                   <span className="block text-sm">{currentUser.name}</span>
                   <span className="block text-sm font-medium truncate">

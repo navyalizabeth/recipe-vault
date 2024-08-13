@@ -13,12 +13,13 @@ export default function RecipeDetail() {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipes/${id}`);
+        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipes/${id}`, { withCredentials: true });
         setRecipe(res.data);
       } catch (error) {
         setErrorMessage(
-         "Recipe Not Found!"
+          error.response?.data?.message || "Failed to fetch recipe"
         );
+        console.error("Failed to fetch recipe:", error);
       } finally {
         setLoading(false);
       }
