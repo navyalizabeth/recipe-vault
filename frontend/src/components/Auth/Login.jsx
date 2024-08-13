@@ -27,18 +27,20 @@ export default function Login() {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/user/login", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
       if (!res.ok) {
+        console.log(data)
         throw new Error(data.message || "Login failed");
       }
       dispatch(signInSuccess(data));
       navigate("/");
     } catch (error) {
+      console.log(error)
       dispatch(signInFailure(error.message));
     }
   };

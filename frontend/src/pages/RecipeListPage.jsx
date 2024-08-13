@@ -12,7 +12,7 @@ export default function RecipeListPage() {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const { data } = await axios.get("/api/recipes");
+        const { data } = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipes`);
         setErrorMessage(null);
         setRecipes(data);
       } catch (error) {

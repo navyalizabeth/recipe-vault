@@ -18,7 +18,7 @@ export default function NavbarComponent() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/signout`, {
         method: "POST",
       });
       const data = await res.json();
@@ -33,15 +33,13 @@ export default function NavbarComponent() {
   };
 
   const handleSearch = async (query) => {
-    console.log("Searching for:", query);
     setLoading(true);
     try {
-      const res = await axios.get("/api/searchrecipes/search", {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/searchrecipes/search`, {
         params: { q: query },
       });
       setSearchResults(res.data);
     } catch (error) {
-      console.error("Search error:", error);
       setSearchResults([]);
     } finally {
       setLoading(false);

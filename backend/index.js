@@ -24,9 +24,9 @@ mongoose
     console.log("Error Connecting to database", error);
   });
 
-app.use("/api/user", userRoutes);
-app.use("/api/recipes", recipeRoutes);
-app.use("/api/searchrecipes", searchRoutes);
+app.use("/user", userRoutes);
+app.use("/recipes", recipeRoutes);
+app.use("/searchrecipes", searchRoutes);
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";

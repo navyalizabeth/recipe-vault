@@ -23,7 +23,7 @@ export default function Signup() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await axios.post("/api/user/signup", formData);
+      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/signup`, formData);
       if (res.data.success === false) {
         setErrorMessage(res.data.message);
       }
