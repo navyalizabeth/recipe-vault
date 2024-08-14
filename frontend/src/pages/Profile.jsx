@@ -15,7 +15,7 @@ export default function Profile() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/signout`, {
+      const res = await fetch("/api/user/signout", {
         method: "POST",
       });
       const data = await res.json();

@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/recipes/public`);
+        const res = await axios.get("/api/recipes/public");
         setRecipes(res.data);
       } catch (error) {
         console.error("Failed to fetch recipes:", error);

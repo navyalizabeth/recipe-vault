@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput, Button, Alert, Spinner } from "flowbite-react";
@@ -10,7 +9,6 @@ import {
 } from "../../redux/user/userSlice";
 
 export default function Login() {
-  const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -27,7 +25,7 @@ export default function Login() {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/user/login`, {
+      const res = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

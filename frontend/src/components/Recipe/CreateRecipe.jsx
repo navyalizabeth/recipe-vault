@@ -72,7 +72,7 @@ export default function CreateRecipe() {
       setLoading(true);
       setErrorMessage(null);
       dispatch(createRecipeStart());
-      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/recipes/create`, {
+      const res = await axios.post("/api/recipes/create", {
         ...formData,
         ingredients: formData.ingredients.map((i) => i.value),
         steps: formData.steps.map((s) => s.value),
@@ -184,7 +184,7 @@ export default function CreateRecipe() {
             />
           </div>
 
-          {/* <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4">
             <input
               type="checkbox"
               id="isPrivate"
@@ -198,7 +198,7 @@ export default function CreateRecipe() {
             >
               Make the Recipe Private
             </Label>
-          </div> */}
+          </div>
           <Button
             type="submit"
             className="w-full font-semibold rounded-lg"
