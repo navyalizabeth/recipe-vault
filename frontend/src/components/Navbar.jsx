@@ -16,21 +16,21 @@ export default function NavbarComponent() {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log(data.message);
-      } else {
-        dispatch(signoutSuccess());
-      }
+      const res = await api.post(`/api/user/signout`);
+      dispatch(signoutSuccess());
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response?.data?.message || error.message);
     }
   };
+  
 
   const handleSearch = async (query) => {
     console.log("Searching for:", query);
