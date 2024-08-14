@@ -8,22 +8,31 @@ export default function RecipeListPage() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const { data } = await axios.get("/api/recipes");
+        setLoading(true);
+        const { data } = await api.get(`/api/recipes`);
         setErrorMessage(null);
         setRecipes(data);
       } catch (error) {
+        console.error("Failed to fetch recipes:", error);
         setErrorMessage(error.response?.data?.message || error.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchRecipes();
   }, []);
+  
 
   if (loading) {
     return (

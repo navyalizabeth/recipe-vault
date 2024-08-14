@@ -3,6 +3,7 @@ import { Card, Button } from "flowbite-react";
 import { FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { signoutSuccess } from "../redux/user/userSlice";
+import axios from "axios";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ export default function Profile() {
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   const handleSignout = async () => {

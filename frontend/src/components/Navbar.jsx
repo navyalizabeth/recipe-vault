@@ -19,7 +19,7 @@ export default function NavbarComponent() {
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   const handleSignout = async () => {
@@ -30,16 +30,15 @@ export default function NavbarComponent() {
       console.log(error.response?.data?.message || error.message);
     }
   };
-  
 
   const handleSearch = async (query) => {
     console.log("Searching for:", query);
     setLoading(true);
     try {
-      const res = await axios.get("/api/searchrecipes/search", {
+      const { data } = await api.get(`/api/searchrecipes/search`, {
         params: { q: query },
       });
-      setSearchResults(res.data);
+      setSearchResults(data);
     } catch (error) {
       console.error("Search error:", error);
       setSearchResults([]);

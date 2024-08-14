@@ -58,8 +58,17 @@ export default function CreateRecipe() {
     }));
   };
 
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate the form data
     if (
       !formData.name ||
       formData.ingredients.some((i) => !i.value) ||
@@ -68,28 +77,34 @@ export default function CreateRecipe() {
     ) {
       return setErrorMessage("Please fill out all required fields");
     }
+
     try {
       setLoading(true);
       setErrorMessage(null);
       dispatch(createRecipeStart());
-      const res = await axios.post("/api/recipes/create", {
+
+      const submissionData = {
         ...formData,
         ingredients: formData.ingredients.map((i) => i.value),
         steps: formData.steps.map((s) => s.value),
-      });
+      };
+
+      const res = await api.post(`/api/recipes/create`, submissionData);
+
       if (res.data.success === false) {
         setErrorMessage(res.data.message);
-      }
-      dispatch(createRecipeSuccess(res.data));
-      setLoading(false);
-      if (res.status === 201) {
+        dispatch(createRecipeFailure(res.data.message));
+      } else if (res.status === 201) {
+        dispatch(createRecipeSuccess(res.data));
         navigate("/recipes");
       }
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || error.message);
-      dispatch(
-        createRecipeFailure(error.response?.data?.message || error.message)
-      );
+      // Handle any errors that occur during the request
+      const errorMsg = error.response?.data?.message || error.message;
+      setErrorMessage(errorMsg);
+      dispatch(createRecipeFailure(errorMsg));
+    } finally {
+      // Ensure loading is stopped regardless of outcome
       setLoading(false);
     }
   };

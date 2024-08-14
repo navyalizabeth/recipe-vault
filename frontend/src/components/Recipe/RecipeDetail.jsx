@@ -9,16 +9,20 @@ export default function RecipeDetail() {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const res = await axios.get(`/api/recipes/${id}`);
+        setLoading(true);
+        const res = await api.get(`/api/recipes/${id}`);
         setRecipe(res.data);
       } catch (error) {
-        setErrorMessage(
-         "Recipe Not Found!"
-        );
+        setErrorMessage("Recipe Not Found!");
       } finally {
         setLoading(false);
       }
