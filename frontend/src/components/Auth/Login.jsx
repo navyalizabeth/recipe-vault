@@ -7,8 +7,15 @@ import {
   signInSuccess,
   signInFailure,
 } from "../../redux/user/userSlice";
+import axios from "axios";
 
 export default function Login() {
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { loading, error: errorMessage } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -20,24 +27,20 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.email || !formData.password) {
       return dispatch(signInFailure("Please fill out all fields"));
     }
+
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-      dispatch(signInSuccess(data));
+
+      const res = await api.post(`/api/user/login`, formData);
+
+      dispatch(signInSuccess(res.data));
       navigate("/");
     } catch (error) {
-      dispatch(signInFailure(error.message));
+      dispatch(signInFailure(error.response?.data?.message || error.message));
     }
   };
 

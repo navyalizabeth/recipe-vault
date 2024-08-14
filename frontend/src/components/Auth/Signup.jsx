@@ -10,29 +10,37 @@ export default function Signup() {
   const [visible, setVisible] = useState(false);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
-
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields");
     }
+
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await axios.post("/api/user/signup", formData);
+
+      const res = await api.post("/api/user/signup", formData);
+
       if (res.data.success === false) {
         setErrorMessage(res.data.message);
-      }
-      setLoading(false);
-      if (res.status === 201) {
+      } else if (res.status === 201) {
         navigate("/login");
       }
     } catch (error) {
       setErrorMessage(error.response?.data?.message || error.message);
+    } finally {
       setLoading(false);
     }
   };
