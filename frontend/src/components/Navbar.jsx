@@ -21,6 +21,7 @@ export default function NavbarComponent() {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
   const handleSignout = async () => {
     try {

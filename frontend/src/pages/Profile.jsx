@@ -19,6 +19,7 @@ export default function Profile() {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
   const handleSignout = async () => {
     try {

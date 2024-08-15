@@ -63,6 +63,7 @@ export default function CreateRecipe() {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
 
   const handleSubmit = async (e) => {

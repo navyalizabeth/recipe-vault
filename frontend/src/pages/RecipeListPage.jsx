@@ -13,6 +13,7 @@ export default function RecipeListPage() {
     headers: {
       'Content-Type': 'application/json',
     },
+    withCredentials: true,
   });
   
   useEffect(() => {

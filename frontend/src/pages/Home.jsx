@@ -14,6 +14,7 @@ export default function Home() {
     headers: {
       'Content-Type': 'application/json',
     },
+    withCredentials: true,
   });
   
   useEffect(() => {

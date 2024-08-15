@@ -15,6 +15,7 @@ export default function Login() {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true, 
   });
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { loading, error: errorMessage } = useSelector((state) => state.user);

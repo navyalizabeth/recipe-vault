@@ -14,6 +14,7 @@ export default function RecipeDetail() {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
   useEffect(() => {
     const fetchRecipe = async () => {
