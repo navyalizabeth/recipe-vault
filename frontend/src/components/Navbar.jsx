@@ -33,7 +33,6 @@ export default function NavbarComponent() {
   };
 
   const handleSearch = async (query) => {
-    console.log("Searching for:", query);
     setLoading(true);
     try {
       const { data } = await api.get(`/api/searchrecipes/search`, {
